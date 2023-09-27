@@ -6,7 +6,16 @@ from botocore.exceptions import ClientError
 from fastapi.middleware.cors import CORSMiddleware
 from dynamodb_json import json_util as dynamo_json
 import json
+import logging
 
+logger=logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+formatter=logging.Formatter('%(asctime)s : %(levelname)s : %(name)s : %(message)s')
+
+file_handler=logging.FileHandler('crud.log')
+file_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
 
 
 app = FastAPI()
@@ -25,9 +34,9 @@ app.add_middleware(
 
 dynamodb = boto3.client(
     'dynamodb',
-    region_name='ap-south-1',  
-    aws_access_key_id='',  
-    aws_secret_access_key=''  
+    # region_name='ap-south-1',  
+    # aws_access_key_id='',  
+    # aws_secret_access_key=''  
 )
 
 # Define a Pydantic model for student data
@@ -79,7 +88,7 @@ def read_student(Id: str):
     try:
  # get the student data from DynamoDB
         response = dynamodb.get_item(TableName=table_name, Key={'Id': {'N': Id}})
-        print(response['Item'])
+        logger.info(response['Item'])
 
         # Check if the item exists
         if 'Item' not in response:
@@ -95,7 +104,7 @@ def read_student(Id: str):
             normal_json_example = json.dumps(dynamo_json.loads(dynamodb_json_example))
 
         # Print the result
-            print(normal_json_example)
+            logger.info(normal_json_example)
 
             return {'data':normal_json_example}
 

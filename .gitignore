@@ -20,6 +20,7 @@ site_build
 venv
 docs.zip
 archive.zip
+crud.log
 
 # vim temporary files
 *~
