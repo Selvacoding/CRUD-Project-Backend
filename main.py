@@ -68,8 +68,9 @@ def create_student(student: Student):
             Item=dynamodb_item,
             ConditionExpression=condition_expression
         )
-        
+        logger.info('Item')
         return {'data': "Your details have been created"}
+    
     
     except ClientError as e:
         if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
@@ -78,9 +79,11 @@ def create_student(student: Student):
             status_code=404,
             content={'data':"You either deleted the details or You haven't created"}
         )
+        
         else:
             # Handle other DynamoDB exceptions
             raise HTTPException(status_code=500, detail={'error': 'Internal Server Error'})
+        
 
 
 @app.get("/student/{Id}")
