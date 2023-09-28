@@ -68,7 +68,6 @@ def create_student(student: Student):
             Item=dynamodb_item,
             ConditionExpression=condition_expression
         )
-        logger.info('Item')
         return {'data': "Your details have been created"}
     
     
