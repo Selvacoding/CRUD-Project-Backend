@@ -68,6 +68,7 @@ def create_student(student: Student):
             Item=dynamodb_item,
             ConditionExpression=condition_expression
         )
+        logger.info('Item')
         return {'data': "Your details have been created"}
     
     
@@ -106,7 +107,6 @@ def read_student(Id: str):
             normal_json_example = json.dumps(dynamo_json.loads(dynamodb_json_example))
 
         # Print the result
-            logger.info(normal_json_example)
 
             return {'data':normal_json_example}
 
